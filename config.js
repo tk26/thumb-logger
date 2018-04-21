@@ -18,7 +18,7 @@ function config(){
           var DB_PASSWORD = process.env.DB_PASSWORD;
 
           return {
-              'LOGGER_DATABASE': 'mongodb://'+DB_USER+':'+DB_PASSWORD+'@ds231245.mlab.com:31245/thumb-logs',
+              'LOGGER_DATABASE': 'mongodb://'+DB_USER+':'+DB_PASSWORD+'@ds253889.mlab.com:53889/thumb-logs',
               'LOGGER_LEVEL': 'info'
             };
 
