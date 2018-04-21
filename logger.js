@@ -1,33 +1,40 @@
 let winston = require('winston');
 require('winston-mongodb').MongoDB;
-let config = require('../config.js');
+let config = require('./config.js');
 
-exports.createLogger = function(app){
-  let logger = new winston.Logger({
-    level: config.LOG_LEVEL,
-    transports: [
-      new(winston.transports.MongoDB)({
-        db : config.LOGGER_DATABASE,
-        collection: app + '-logs'
-      })
-    ],
-    exceptionHandlers: [
-        new winston.transports.File({
-            filename: 'log/exceptions.log',
-            humanReadableUnhandledException: true,
-            timestamp: true
-        })
-    ]
-  });
+const loggerCollections = {
+  WorkerLog: "worker_logs",
+  APILog: "api_logs",
+  WebAppLog: "webapp_logs",
+  IOSLog: "ios_logs",
+  AndroidLog: "android_logs"
+}
 
-  logger.stream = {
-    write: function(message, encoding){
-        logger.info(message.slice(0, -1));
-    }
-  };
-
-  if (process.env.NODE_ENV !== 'prod') {
-    logger.add(winston.transports.Console);
+const addLogger = function(logger){
+  const collection = loggerCollections[logger];
+  if (!collection){
+    throw 'Unknown logger.';
   }
-  return logger;
+  let transports = [];
+  transports.push(new(winston.transports.MongoDB)({
+            db : config.LOGGER_DATABASE,
+            collection : collection,
+            level : config.LOGGER_LEVEL,
+            capped : true
+        }));
+  if(process.env.NODE_ENV !== 'prod'){
+    transports.push(new(winston.transports.Console)());
+  }
+  winston.loggers.add(logger,{
+    transports : transports
+  });
+  return winston.loggers.get(logger);
+}
+
+exports.getLogger = function(loggerName){
+  if(loggerName in winston.loggers.loggers){
+    return winston.loggers.get(loggerName);
+  } else {
+    return addLogger(loggerName);
+  }
 }

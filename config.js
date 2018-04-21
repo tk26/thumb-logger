@@ -3,12 +3,14 @@ function config(){
   switch(process.env.NODE_ENV){
       case 'dev':
           return {
-            'LOGGER_DATABASE': 'mongodb://localhost/thumb-logs'
+            'LOGGER_DATABASE': 'mongodb://localhost/thumb-logs',
+            'LOGGER_LEVEL': 'info'
           };
 
       case 'test':
           return {
-            'LOGGER_DATABASE': 'mongodb://localhost/thumb-logs_test'
+            'LOGGER_DATABASE': 'mongodb://localhost/thumb-logs_test',
+            'LOGGER_LEVEL': 'info'
           };
 
       case 'prod':
@@ -16,7 +18,8 @@ function config(){
           var DB_PASSWORD = process.env.DB_PASSWORD;
 
           return {
-              'LOGGER_DATABASE': 'mongodb://'+DB_USER+':'+DB_PASSWORD+'@ds231245.mlab.com:31245/thumb-logs'
+              'LOGGER_DATABASE': 'mongodb://'+DB_USER+':'+DB_PASSWORD+'@ds231245.mlab.com:31245/thumb-logs',
+              'LOGGER_LEVEL': 'info'
             };
 
       default:
