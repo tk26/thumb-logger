@@ -22,7 +22,7 @@ const addLogger = function(logger){
             level : config.LOGGER_LEVEL,
             capped : true
         }));
-  if(process.env.NODE_ENV !== 'prod'){
+  if(process.env.NODE_ENV === 'dev'){
     transports.push(new(winston.transports.Console)());
   }
   winston.loggers.add(logger,{
