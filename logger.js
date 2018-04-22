@@ -13,7 +13,7 @@ const loggerCollections = {
 const addLogger = function(logger){
   const collection = loggerCollections[logger];
   if (!collection){
-    throw 'Unknown logger.';
+    throw new TypeError('Unknown logger.');
   }
   let transports = [];
   transports.push(new(winston.transports.MongoDB)({
