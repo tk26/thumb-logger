@@ -8,7 +8,8 @@ const loggerCollections = {
   WebAppLog: "webapp_logs",
   IOSLog: "ios_logs",
   AndroidLog: "android_logs",
-  DBLog: "db_logs"
+  DBLog: "db_logs",
+  MessageServiceLog: "messageservice_logs"
 }
 
 const addLogger = function(logger){
